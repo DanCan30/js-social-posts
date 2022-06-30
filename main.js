@@ -99,10 +99,10 @@ const posts = [
 
 
 const postContainer = document.getElementById("container");
+const likeValueDetector = [];
 
-
-
-posts.forEach( (post) => {
+posts.forEach( (post, index) => {
+    
     let newPost = document.createElement("div");
     newPost.classList.add("post");
     newPost.innerHTML = 
@@ -124,10 +124,10 @@ posts.forEach( (post) => {
     <div class="post__footer">
         <div class="likes js-likes">
             <div class="likes__cta">
-                <a class="like-button  js-like-button" href="#" data-postid="1">
+                <span class="like-button  js-like-button" data-postid="${post.id}">
                     <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                     <span class="like-button__label">Mi Piace</span>
-                </a>
+                </span>
             </div>
             <div class="likes__counter">
                 Piace a <b id="like-counter-1" class="js-likes-counter">${post.likes}</b> persone
@@ -135,6 +135,33 @@ posts.forEach( (post) => {
         </div>
     </div>`
 
-
     postContainer.append(newPost);
+    
+    const likeButton = document.querySelectorAll("span.like-button");
+    const likeLabel = document.querySelectorAll("span.like-button__label");
+    const likeCounter = document.querySelectorAll("#like-counter-1");
+    
+       if (post.is_liked === true) {
+           likeButton[index].classList.add("like-button--liked");
+           likeLabel[index].innerHTML = "Ti Piace!";
+       };
+    
+    likeButton[index].addEventListener("click", function() {
+        
+        if (post.is_liked === true) {
+            likeButton[index].classList.remove("like-button--liked");
+            likeLabel[index].innerHTML = "Mi Piace";
+            post.likes--
+            likeCounter[index].innerHTML = post.likes;
+            post.is_liked = false;
+        } else {
+            likeButton[index].classList.add("like-button--liked");
+            likeLabel[index].innerHTML = "Ti Piace!";
+            post.likes++
+            likeCounter[index].innerHTML = post.likes;
+            post.is_liked = true;
+        }
+        
+        console.log(post.likes);
+    });
 })

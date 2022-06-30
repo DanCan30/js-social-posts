@@ -121,5 +121,9 @@ h1 {
 
 .like-button--liked {
     color: #0CD977;
-    cursor: default;
+    /* cursor: default; */
+}
+
+.like-button {
+    cursor: pointer;
 }
