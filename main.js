@@ -89,7 +89,7 @@ const posts = [
         "media": "https://unsplash.it/600/400?image=554",
         "author": {
             "name": "Mario Di Nio",
-            "image": "null"
+            "image": "null",
         },
         "likes": 95,
          "is_liked" : true,
@@ -99,10 +99,23 @@ const posts = [
 
 
 const postContainer = document.getElementById("container");
-const likeValueDetector = [];
+
+let currentDate = new Date();
+currentYear = currentDate.getFullYear();
 
 posts.forEach( (post, index) => {
     
+        // Change date to european standard
+    const postYear = selectPartOfAString(post.created, 0, 4);
+    const postMonth = selectPartOfAString(post.created, 5, 7);
+    const postDay = selectPartOfAString(post.created, 8, 10);
+    let europeanDate = `${postDay}-${postMonth}-${postYear}`
+
+    if (postYear < currentYear) {
+        europeanDate = "Un anno fa " + "(" + europeanDate + ")";
+    };
+
+        // Creation of the post element
     let newPost = document.createElement("div");
     newPost.classList.add("post");
     newPost.innerHTML = 
@@ -113,7 +126,7 @@ posts.forEach( (post, index) => {
             </div>
             <div class="post-meta__data">
                 <div class="post-meta__author">${post.author.name}</div>
-                <div class="post-meta__time">${post.created}</div>
+                <div class="post-meta__time">${europeanDate}</div>
             </div>
         </div>
     </div>
@@ -134,9 +147,19 @@ posts.forEach( (post, index) => {
             </div>
         </div>
     </div>`
-
-    postContainer.append(newPost);
     
+    postContainer.append(newPost);
+
+        // Placeholder for missing profile pics
+    const authorImg = document.querySelectorAll("div.post-meta__icon");
+    
+        if (post.author.image === null || post.author.image === "null") {
+            authorImg[index].innerHTML = 
+            `<div class="placeholder-profile-pic">${selectCapitalLetters(post.author.name)}</div>`
+        };
+
+    
+        // Like system
     const likeButton = document.querySelectorAll("span.like-button");
     const likeLabel = document.querySelectorAll("span.like-button__label");
     const likeCounter = document.querySelectorAll("#like-counter-1");
@@ -160,8 +183,32 @@ posts.forEach( (post, index) => {
             post.likes++
             likeCounter[index].innerHTML = post.likes;
             post.is_liked = true;
-        }
-        
-        console.log(post.likes);
+        };
     });
-})
+});
+
+
+
+
+
+//                              FUNCTIONS
+
+
+function selectPartOfAString(string, from, to) {
+    return string.substring(from, to);
+};
+
+
+function selectCapitalLetters(string) {
+    let capitalLetters = "";
+    
+    const uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  
+    for (let i = 0; i < string.length; i++) {
+      if (uppercaseLetters.includes(string[i])) {
+        capitalLetters += string[i];
+      }
+    };
+    
+    return capitalLetters;
+  };

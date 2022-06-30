@@ -122,8 +122,32 @@ h1 {
 .like-button--liked {
     color: #0CD977;
     /* cursor: default; */
+    transition: all .2s;
 }
 
+
+
+        /* CSS added */
+
 .like-button {
+    transition: all .2s;
     cursor: pointer;
+}
+
+.like-button--liked:hover {
+    background-color: rgb(216, 78, 78);
+    color: black;
+}
+
+.placeholder-profile-pic {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #023047;
+    height: 60px;
+    width: 60px;
+    overflow: hidden;
+    border-radius: 50%;
+    font-weight: bold;
+    color: white;
 }
